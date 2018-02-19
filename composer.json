@@ -1,0 +1,15 @@
+{
+	"name": "dvi/adianti_extensions",
+	"description": "Extensions for Adianti framework",
+	"type":"library",
+	"authors": [ {
+		"name": "Davi Menezes",
+	    	"email": "davimenezes.dev@gmail.com"
+	}],
+	"autoload": {
+		"psr-4" : {
+			"Adianti\\Extensions\\" : "/src"
+		},
+		"classmap": ["/src"]
+	}
+}
