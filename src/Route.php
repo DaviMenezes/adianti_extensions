@@ -4,6 +4,7 @@ namespace Dvi\Adianti;
 use Adianti\Base\App\Service\SystemDocumentUploaderService;
 use Adianti\Base\Lib\Base\TStandardSeek;
 use Adianti\Base\Lib\Service\AdiantiMultiSearchService;
+use Adianti\Base\Lib\Service\AdiantiUploaderService;
 use Adianti\Base\Lib\Widget\Dialog\TMessage;
 use Adianti\Base\Modules\Admin\Control\EmptyPage;
 use Adianti\Base\Modules\Admin\Control\LoginForm;
@@ -160,8 +161,9 @@ class Route
 
         $routes['SystemAccessLog'] = SystemAccessLog::class;
         $routes['SystemDocumentUploaderService'] = SystemDocumentUploaderService::class;
+        $routes['AdiantiUploaderService'] = AdiantiUploaderService::class;
         $routes['AdiantiMultiSearchService'] = AdiantiMultiSearchService::class;
-
+        
         return $routes;
     }
 }
