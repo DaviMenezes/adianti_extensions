@@ -80,7 +80,7 @@ class Route
 
             $class_name = self::getClassName($class);
             $error_msg = 'O arquivo ' . $class_name . ' não tem sua rota mapeada.<br>';
-            $error_msg .= 'Adicione a linha abaixo no arquivo Dvi\Adianti\Route.php <hr>';
+            $error_msg .= 'Adicione a linha abaixo no arquivo App\Config\MyRoutes.php <hr>';
             $error_msg .= '$routes[\''.$class_name.'\'] = '.$class_name.'::class;';
 
             throw new Exception($error_msg);
