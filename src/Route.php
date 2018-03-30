@@ -162,7 +162,9 @@ class Route
         $routes['SystemDocumentUploaderService'] = SystemDocumentUploaderService::class;
         $routes['AdiantiUploaderService'] = AdiantiUploaderService::class;
         $routes['AdiantiMultiSearchService'] = AdiantiMultiSearchService::class;
-        
+
+        $routes['download'] = 'download.php';
+
         return $routes;
     }
 }
