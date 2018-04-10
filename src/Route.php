@@ -50,6 +50,7 @@ use Adianti\Base\Modules\Log\Control\SystemAccessLogStats;
 use Adianti\Base\Modules\Log\Control\SystemChangeLogView;
 use Adianti\Base\Modules\Log\Control\SystemSqlLogList;
 use Adianti\Base\Modules\Log\Model\SystemAccessLog;
+use Adianti\Base\Modules\Log\Model\SystemSqlLog;
 use App\Config\MyRoutes;
 use Exception;
 
@@ -158,6 +159,7 @@ class Route
         $routes['SystemChangeLogView'] = SystemChangeLogView::class;
         $routes['SystemSqlLogList'] = SystemSqlLogList::class;
 
+        $routes['SystemSqlLog'] = SystemSqlLog::class;
         $routes['SystemAccessLog'] = SystemAccessLog::class;
         $routes['SystemDocumentUploaderService'] = SystemDocumentUploaderService::class;
         $routes['AdiantiUploaderService'] = AdiantiUploaderService::class;
