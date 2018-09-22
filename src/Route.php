@@ -12,6 +12,7 @@ use Adianti\Base\Modules\Admin\Control\SystemDatabaseExplorer;
 use Adianti\Base\Modules\Admin\Control\SystemDataBrowser;
 use Adianti\Base\Modules\Admin\Control\SystemGroupForm;
 use Adianti\Base\Modules\Admin\Control\SystemGroupList;
+use Adianti\Base\Modules\Admin\Control\SystemModulesCheckView;
 use Adianti\Base\Modules\Admin\Control\SystemPageBatchUpdate;
 use Adianti\Base\Modules\Admin\Control\SystemPageUpdate;
 use Adianti\Base\Modules\Admin\Control\SystemPHPErrorLogView;
@@ -21,6 +22,7 @@ use Adianti\Base\Modules\Admin\Control\SystemProfileForm;
 use Adianti\Base\Modules\Admin\Control\SystemProfileView;
 use Adianti\Base\Modules\Admin\Control\SystemProgramForm;
 use Adianti\Base\Modules\Admin\Control\SystemProgramList;
+use Adianti\Base\Modules\Admin\Control\SystemRegistrationForm;
 use Adianti\Base\Modules\Admin\Control\SystemSQLPanel;
 use Adianti\Base\Modules\Admin\Control\SystemSupportForm;
 use Adianti\Base\Modules\Admin\Control\SystemTableList;
@@ -53,6 +55,7 @@ use Adianti\Base\Modules\Log\Model\SystemAccessLog;
 use Adianti\Base\Modules\Log\Model\SystemSqlLog;
 use App\Config\MyRoutes;
 use Exception;
+use SystemRequestPasswordResetForm;
 
 /**
  * Control Routes
@@ -131,6 +134,8 @@ class Route
         $routes['SystemUserForm'] = SystemUserForm::class;
         $routes['SystemUserList'] = SystemUserList::class;
         $routes['TStandardSeek'] = TStandardSeek::class;
+        $routes['SystemRegistrationForm'] = SystemRegistrationForm::class;
+        $routes['SystemRequestPasswordResetForm'] = SystemRequestPasswordResetForm::class;
 
         //Available
         $routes['PublicView'] = PublicView::class;
@@ -164,6 +169,7 @@ class Route
         $routes['SystemDocumentUploaderService'] = SystemDocumentUploaderService::class;
         $routes['AdiantiUploaderService'] = AdiantiUploaderService::class;
         $routes['AdiantiMultiSearchService'] = AdiantiMultiSearchService::class;
+        $routes['SystemModulesCheckView'] = SystemModulesCheckView::class;
 
         $routes['download'] = 'download.php';
 
