@@ -1,5 +1,5 @@
 <?php
-namespace Dvi\Adianti;
+namespace Dvi\AdiantiExtension;
 
 use Adianti\Base\App\Service\SystemDocumentUploaderService;
 use Adianti\Base\Lib\Base\TStandardSeek;
