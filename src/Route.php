@@ -1,41 +1,39 @@
 <?php
 namespace Dvi\AdiantiExtension;
-
+//Todo remover apos testes
 use Adianti\Base\App\Service\SystemDocumentUploaderService;
 use Adianti\Base\Lib\Base\TStandardSeek;
 use Adianti\Base\Lib\Service\AdiantiMultiSearchService;
 use Adianti\Base\Lib\Service\AdiantiUploaderService;
 use Adianti\Base\Lib\Widget\Dialog\TMessage;
 use Adianti\Base\Modules\Admin\Control\EmptyPage;
-use Adianti\Base\Modules\Admin\Control\LoginForm;
-use Adianti\Base\Modules\Admin\Control\SystemDatabaseExplorer;
-use Adianti\Base\Modules\Admin\Control\SystemDataBrowser;
-use Adianti\Base\Modules\Admin\Control\SystemGroupForm;
-use Adianti\Base\Modules\Admin\Control\SystemGroupList;
+use Adianti\Base\Modules\Admin\User\Control\LoginForm;
+use Adianti\Base\Modules\Admin\Database\Control\SystemDatabaseExplorer;
+use Adianti\Base\Modules\Admin\Database\Control\SystemDataBrowser;
+use Adianti\Base\Modules\Admin\Program\Control\SystemGroupForm;
+use Adianti\Base\Modules\Admin\Program\Control\SystemGroupList;
 use Adianti\Base\Modules\Admin\Control\SystemModulesCheckView;
 use Adianti\Base\Modules\Admin\Control\SystemPageBatchUpdate;
-use Adianti\Base\Modules\Admin\Control\SystemPageUpdate;
 use Adianti\Base\Modules\Admin\Control\SystemPHPErrorLogView;
 use Adianti\Base\Modules\Admin\Control\SystemPHPInfoView;
 use Adianti\Base\Modules\Admin\Control\SystemPreferenceForm;
-use Adianti\Base\Modules\Admin\Control\SystemProfileForm;
-use Adianti\Base\Modules\Admin\Control\SystemProfileView;
-use Adianti\Base\Modules\Admin\Control\SystemProgramForm;
-use Adianti\Base\Modules\Admin\Control\SystemProgramList;
-use Adianti\Base\Modules\Admin\Control\SystemRegistrationForm;
-use Adianti\Base\Modules\Admin\Control\SystemSQLPanel;
+use Adianti\Base\Modules\Admin\User\Control\SystemProfileForm;
+use Adianti\Base\Modules\Admin\User\Control\SystemProfileView;
+use Adianti\Base\Modules\Admin\Program\Control\SystemProgramForm;
+use Adianti\Base\Modules\Admin\Program\Control\SystemProgramList;
+use Adianti\Base\Modules\Admin\User\Control\SystemRegistrationForm;
+use Adianti\Base\Modules\Admin\Database\Control\SystemSQLPanel;
 use Adianti\Base\Modules\Admin\Control\SystemSupportForm;
-use Adianti\Base\Modules\Admin\Control\SystemTableList;
-use Adianti\Base\Modules\Admin\Control\SystemUnitForm;
-use Adianti\Base\Modules\Admin\Control\SystemUnitList;
-use Adianti\Base\Modules\Admin\Control\SystemUserForm;
-use Adianti\Base\Modules\Admin\Control\SystemUserList;
+use Adianti\Base\Modules\Admin\Database\Control\SystemTableList;
+use Adianti\Base\Modules\Admin\Unit\Control\SystemUnitForm;
+use Adianti\Base\Modules\Admin\Unit\Control\SystemUnitList;
+use Adianti\Base\Modules\Admin\User\Control\SystemUserForm;
+use Adianti\Base\Modules\Admin\User\Control\SystemUserList;
 use Adianti\Base\Modules\Available\Control\PublicView;
 use Adianti\Base\Modules\Common\Control\CommonPage;
 use Adianti\Base\Modules\Common\Control\MessageList;
 use Adianti\Base\Modules\Common\Control\NotificationList;
 use Adianti\Base\Modules\Common\Control\SearchBox;
-use Adianti\Base\Modules\Common\Control\SearchInputBox;
 use Adianti\Base\Modules\Common\Control\WelcomeView;
 use Adianti\Base\Modules\Communication\Control\SystemDocumentCategoryFormList;
 use Adianti\Base\Modules\Communication\Control\SystemDocumentForm;
@@ -53,7 +51,9 @@ use Adianti\Base\Modules\Log\Control\SystemChangeLogView;
 use Adianti\Base\Modules\Log\Control\SystemSqlLogList;
 use Adianti\Base\Modules\Log\Model\SystemAccessLog;
 use Adianti\Base\Modules\Log\Model\SystemSqlLog;
-use App\Config\MyRoutes;
+use App\Http\RouteInfo;
+use App\Http\Router;
+use Dvi\Adianti\Helpers\Reflection;
 use Exception;
 use SystemRequestPasswordResetForm;
 
@@ -74,43 +74,27 @@ class Route
      */
     public static function getPath($class)
     {
+        //Todo verificar se este metodo eh usado no projeto dvioffice, senao, excluir
         try {
-            $route = MyRoutes::getRoutes();
-            if (array_key_exists($class, $route)) {
-                return $route[$class];
-            } elseif (in_array($class, $route)) {
-                return $class;
-            }
-
-            $class_name = self::getClassName($class);
-            $error_msg = 'O arquivo ' . $class_name . ' não tem sua rota mapeada.<br>';
-            $error_msg .= 'Adicione a linha abaixo no arquivo App\Config\MyRoutes.php <hr>';
-            $error_msg .= '$routes[\''.$class_name.'\'] = '.$class_name.'::class;';
-
-            throw new Exception($error_msg);
+            $handler = Router::routes()->map(function ($route_info, $route) use ($class) {
+                /**@var RouteInfo $route_info*/
+                if (Reflection::shortName($route_info->class()) == $class) {
+                    return $route_info->class();
+                }
+            });
+            return $handler;
         } catch (Exception $e) {
             new TMessage('info', $e->getMessage());
             die();
         }
     }
 
-    public static function getClassName($class)
-    {
-        foreach (MyRoutes::getRoutes() as $key => $route) {
-            if ($class == $route) {
-                return $key;
-                break;
-            }
-        }
-        $class_name = explode('\\', $class);
-        $class_name = array_pop($class_name);
-        return $class_name;
-    }
-
     public static function getRoutes()
     {
+        //Todo verificar se este metodo eh usado no projeto dvioffice, senao, excluir
         //Adianti Modules
         //Admin
+        //Todo remover apos testes
         $routes['EmptyPage'] = EmptyPage::class;
         $routes['LoginForm'] = LoginForm::class;
         $routes['SystemDatabaseExplorer'] = SystemDatabaseExplorer::class;
@@ -118,7 +102,6 @@ class Route
         $routes['SystemGroupForm'] = SystemGroupForm::class;
         $routes['SystemGroupList'] = SystemGroupList::class;
         $routes['SystemPageBatchUpdate'] = SystemPageBatchUpdate::class;
-        $routes['SystemPageUpdate'] = SystemPageUpdate::class;
         $routes['SystemPHPErrorLogView'] = SystemPHPErrorLogView::class;
         $routes['SystemPHPInfoView'] = SystemPHPInfoView::class;
         $routes['SystemPreferenceForm'] = SystemPreferenceForm::class;
@@ -136,17 +119,16 @@ class Route
         $routes['TStandardSeek'] = TStandardSeek::class;
         $routes['SystemRegistrationForm'] = SystemRegistrationForm::class;
         $routes['SystemRequestPasswordResetForm'] = SystemRequestPasswordResetForm::class;
-
-        //Available
+//
+//        //Available
         $routes['PublicView'] = PublicView::class;
         $routes['CommonPage'] = CommonPage::class;
         $routes['MessageList'] = MessageList::class;
         $routes['NotificationList'] = NotificationList::class;
         $routes['SearchBox'] = SearchBox::class;
-        $routes['SearchInputBox'] = SearchInputBox::class;
         $routes['WelcomeView'] = WelcomeView::class;
-
-        //Communication
+//
+//        //Communication
         $routes['SystemDocumentCategoryFormList'] = SystemDocumentCategoryFormList::class;
         $routes['SystemDocumentForm'] = SystemDocumentForm::class;
         $routes['SystemDocumentList'] = SystemDocumentList::class;
@@ -157,8 +139,8 @@ class Route
         $routes['SystemNotificationFormView'] = SystemNotificationFormView::class;
         $routes['SystemNotificationList'] = SystemNotificationList::class;
         $routes['SystemSharedDocumentList'] = SystemSharedDocumentList::class;
-
-        //Log
+//
+//        //Log
         $routes['SystemAccessLogList'] = SystemAccessLogList::class;
         $routes['SystemAccessLogStats'] = SystemAccessLogStats::class;
         $routes['SystemChangeLogView'] = SystemChangeLogView::class;
@@ -170,7 +152,7 @@ class Route
         $routes['AdiantiUploaderService'] = AdiantiUploaderService::class;
         $routes['AdiantiMultiSearchService'] = AdiantiMultiSearchService::class;
         $routes['SystemModulesCheckView'] = SystemModulesCheckView::class;
-
+//
         $routes['download'] = 'download.php';
 
         return $routes;
